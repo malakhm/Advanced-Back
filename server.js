@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import express from 'express';
 import companiesRoutes from './routes/companieRoute.js';
 import categoriesRoutes from './routes/categorieRoute .js';
+import feedbackRoutes from './routes/feedbacks.js';
+
 
 import db from './configuration/db.js'; 
 const app = express();
@@ -20,6 +22,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/companies', companiesRoutes);
 app.use('/api/categories', categoriesRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 
 
