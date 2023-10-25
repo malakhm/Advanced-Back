@@ -6,20 +6,21 @@ const getAllCompanies = async (req, res) => {
   try {
     const companies = await Company.find();
     res.status(200).json(
-      { data: companies,
-        message:'success',
-        status : 200
+      {
+        data: companies,
+        message: 'success',
+        status: 200
       }
     );
 
 
 
   } catch (error) {
-    res.status(400).json( 
+    res.status(400).json(
       {
-       data: null,
-       message:error.message,
-       status : 400
+        data: null,
+        message: error.message,
+        status: 400
       }
     );
   }
@@ -30,10 +31,11 @@ const getCompany = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json( 
-      { data: null,
-        message:'not found',
-        status : 404
+    return res.status(404).json(
+      {
+        data: null,
+        message: 'not found',
+        status: 404
       }
     );
   }
@@ -41,17 +43,19 @@ const getCompany = async (req, res) => {
 
   if (!company) {
     return res.status(404).json(
-      { data: null,
-        message:'not found',
-        status : 404
+      {
+        data: null,
+        message: 'not found',
+        status: 404
       }
     );
   }
 
   res.status(200).json(
-    { data: company,
-      message:'succes',
-      status : 200
+    {
+      data: company,
+      message: 'succes',
+      status: 200
     }
   );
 }
@@ -63,65 +67,67 @@ const createCompany = async (req, res) => {
     const company = await Company.create({ name, telephone, logo, location, website_link, email });
 
     res.json(
-      { data: company,
-        message:'succes',
-        status : 200
+      {
+        data: company,
+        message: 'succes',
+        status: 200
       }
     );
   } catch (err) {
     res.status(400).json(
-      { data: null,
-        message:err.message,
-        status : 400
+      {
+        data: null,
+        message: err.message,
+        status: 400
       }
     );
   }
 };
 
 // Update a Company 
-const updateCompany = async(req, res) => { 
+const updateCompany = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json(
-      { data: null,
-        message:'not found',
-        status : 404
-    });
+      {
+        data: null,
+        message: 'not found',
+        status: 404
+      });
   }
-  const company = await Company.findByIdAndUpdate({_id:id},{...req.body});
+  const company = await Company.findByIdAndUpdate({ _id: id }, { ...req.body });
 
   if (!company) {
     return res.status(404).json(
 
-     {  data: null,
-        message:'not found',
-        status : 404
+      {
+        data: null,
+        message: 'not found',
+        status: 404
       }
     );
   }
 
   res.status(200).json(
-      { data: company,
-        message:'succes',
-        status : 200
-      }
+    {
+      data: company,
+      message: 'succes',
+      status: 200
+    }
 
   );
 };
-
-
-
-
 
 // Delete a Company
 const deleteCompany = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json(
-      { data: null,
-        message:'not found',
-        status : 404
+      {
+        data: null,
+        message: 'not found',
+        status: 404
       }
     );
   }
@@ -129,18 +135,20 @@ const deleteCompany = async (req, res) => {
 
   if (!company) {
     return res.status(404).json(
-      { data: null,
-        message:'not found',
-        status : 404
+      {
+        data: null,
+        message: 'not found',
+        status: 404
       }
     );
   }
 
   res.status(200).json(
 
-    { data: company,
-      message:'success',
-      status : 200
+    {
+      data: company,
+      message: 'success',
+      status: 200
     }
 
   );
