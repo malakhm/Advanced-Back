@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
@@ -13,7 +14,6 @@ const companiesSchema = new Schema({
   },
   logo: {
     type: String,
-    required: true,
   },
   location: {
     type: String,
@@ -27,6 +27,12 @@ const companiesSchema = new Schema({
     type: String,
     required: true,
   },
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'categories',
+    },
+  ],
 }, { timestamps: true });
 
 export default model('companies', companiesSchema);

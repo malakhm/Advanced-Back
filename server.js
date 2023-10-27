@@ -5,6 +5,8 @@ import companiesRoutes from './routes/companieRoute.js';
 import feedbackRoutes from './routes/feedbacks.js';
 import adminRoutes from './routes/adminRoute.js';
 import categoriesRoutes from './routes/categoriesRoute.js';
+import designRoutes from './routes/designRoute.js';
+import  {upload }from './configuration/multer.js'
 import db from './configuration/db.js'; 
 const app = express();
 
@@ -23,7 +25,11 @@ app.use((req, res, next) => {
 app.use('/api/companies', companiesRoutes);
 app.use('/api/feedbacks', feedbackRoutes)
 app.use('/api/categories', categoriesRoutes)
-app.use('/api/admin',adminRoutes); 
+app.use('/api/admin',adminRoutes);
+app.use('/api/design', designRoutes);
+app.use('/uploads', express.static('uploads'));
+
+
 
 
 //listen to port 
