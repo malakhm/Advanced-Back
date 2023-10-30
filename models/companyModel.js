@@ -27,12 +27,18 @@ const companiesSchema = new Schema({
     type: String,
     required: true,
   },
-  categories: [
+  categories:[
     {
       type: Schema.Types.ObjectId,
       ref: 'categories',
+      require:true
     },
   ],
 }, { timestamps: true });
+
+companiesSchema.pre('find', function(next) {
+  this.populate('categories');
+  next();
+});
 
 export default model('companies', companiesSchema);

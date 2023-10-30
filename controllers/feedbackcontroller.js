@@ -1,92 +1,162 @@
-import express from 'express';
 import Feedback from '../models/feedbackmodel.js';
 import mongoose from 'mongoose';
 
+//get all feedbacks
 
-// get all feedbacks
 const getFeedbacks = async (req, res) => {
-    const feedbacks = await Feedback.find({}).sort({ createdAt: -1 })
-    res.json({
-        data: feedbacks,
-        message: 'success',
-        status: 200
-    })
-}
+  try {
+    const feedbacks = await Feedback.find({}).sort({ createdAt: -1 });
+    res.status(200).json({
+      data: feedbacks,
+      message: 'success',
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
 // get single feedback
 const getFeedback = async (req, res) => {
-    const { id } = req.params
+  const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Invalid' })
-    }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({
+      data: null,
+      message: 'Invalid',
+      status: 404,
+    });
+  }
 
-    const feedback = await Feedback.findById(id)
+  try {
+    const feedback = await Feedback.findById(id);
 
     if (!feedback) {
-        return res.status(404).json({ error: 'Feedback not found' })
+      return res.status(404).json({
+        data: null,
+        message: 'Feedback not found',
+        status: 404,
+      });
     }
-    res.json({
-        data: feedback,
-        message: 'success',
-        status: 200
-    })
-}
-// create a new Feedback
+
+    res.status(200).json({
+      data: feedback,
+      message: 'success',
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
+// create a new Feedback 
+
 const createFeedback = async (req, res) => {
-    const { content, first_name, last_name } = req.body
-    // add feedback to db
-    try {
-        const feedback = await Feedback.create({ content, first_name, last_name })
-        res.json({
-            data: feedback,
-            message: 'success',
-            status: 200
-        })
-    } catch (error) {
-        res.status(404).json({ error: error.message })
-    }
+  const { content, first_name, last_name } = req.body;
 
-}
-// delete a single Feedback
+  try {
+    const feedback = await Feedback.create({ content, first_name, last_name });
+    res.status(201).json({
+      data: feedback,
+      message: 'success',
+      status: 201,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
+// delete a feedback
 const deleteFeedback = async (req, res) => {
-    const { id } = req.params
+  const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Invalid' })
-    }
-    const feedback = await Feedback.findOneAndDelete({ _id: id })
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({
+      data: null,
+      message: 'Invalid',
+      status: 404,
+    });
+  }
+
+  try {
+    const feedback = await Feedback.findOneAndDelete({ _id: id });
 
     if (!feedback) {
-        res.status(404).json({ err: 'Not Found' })
+      return res.status(404).json({
+        data: null,
+        message: 'Not Found',
+        status: 404,
+      });
     }
-    res.json({
-        data: feedback,
-        message: 'success',
-        status: 200
-    })
-}
-// update a single Feedback
+
+    res.status(200).json({
+      data: feedback,
+      message: 'success',
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
+// update feedback 
+
 const updateFeedback = async (req, res) => {
-    const { id } = req.params
+  const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Invalid' })
-    }
-    const feedback = await Feedback.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({
+      data: null,
+      message: 'Invalid',
+      status: 404,
+    });
+  }
+
+  try {
+    const feedback = await Feedback.findOneAndUpdate({ _id: id }, { ...req.body });
+
     if (!feedback) {
-        res.status(404).json({ err: 'Not Found' })
+      return res.status(404).json({
+        data: null,
+        message: 'Not Found',
+        status: 404,
+      });
     }
-    res.json({
-        data: feedback,
-        message: 'success',
-        status: 200
-    })
-}
 
-export {  createFeedback,
-    getFeedback,
-    getFeedbacks,
-    deleteFeedback,
-    updateFeedback };
+    res.status(200).json({
+      data: feedback,
+      message: 'success',
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
+export {
+  createFeedback,
+  getFeedback,
+  getFeedbacks,
+  deleteFeedback,
+  updateFeedback,
+};
