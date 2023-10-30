@@ -14,6 +14,7 @@ const companiesSchema = new Schema({
   },
   logo: {
     type: String,
+    required: true
   },
   location: {
     type: String,
