@@ -58,9 +58,9 @@ const getCategorie = async (req, res) => {
 
 // Create a new categorie
 const createCategorie = async (req, res) => {
-  const { name, telephone, logo, location, website_link, email } = req.body;
+  const { name } = req.body;
   try {
-    const categorie = await Categorie.create({ name, telephone, logo, location, website_link, email });
+    const categorie = await Categorie.create({ name });
 
     res.json(
       { data: categorie,
