@@ -5,18 +5,24 @@ const { Schema, model } = mongoose;
 const designSchema = new Schema({
     images: {
         type: [String],
-        required: true, 
+        required: true,
     },
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Company',
-      required: true, 
+      ref: 'companies',
+      required: true,
     },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true, 
+      ref: 'categories',
+      required: true,
     },
 }, { timestamps: true });
+
+designSchema.pre('find', function (next) {
+  this.populate('companyId').populate('categoryId');
+  next();
+});
+
 
 export default model('designs', designSchema);
