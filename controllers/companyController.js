@@ -58,13 +58,11 @@ const getCompany = async (req, res) => {
 
 // Create a new Company
 const createCompany = async (req, res) => {
-  const { name, telephone, location, website_link, email ,categories} = req.body;
-  
-    if(req.body.logo)
-    var logo = path.join('/uploads/company', req.file.filename);
-
+  const { name, telephone, location, website_link, email, categories } = req.body;
 
   try {
+    const logo = req.file.path; 
+
     const company = await Company.create({
       name,
       telephone,
@@ -72,7 +70,7 @@ const createCompany = async (req, res) => {
       location,
       website_link,
       email,
-      categories
+      categories,
     });
 
     res.status(201).json({
@@ -89,7 +87,7 @@ const createCompany = async (req, res) => {
   }
 };
 
-// Update a Company
+
 const updateCompany = async (req, res) => {
   const { id } = req.params;
 
@@ -107,10 +105,11 @@ const updateCompany = async (req, res) => {
       telephone: req.body.telephone,
       email: req.body.email,
       location: req.body.location,
+      categories: req.body.categories, // Include the categories field
     };
 
     if (req.file) {
-      const image = path.join('uploads/company', req.file.filename);
+      const image = req.file.path;
       updateFields.logo = image;
     }
 
@@ -141,6 +140,8 @@ const updateCompany = async (req, res) => {
     });
   }
 };
+
+
 
 
 // Delete a Company
