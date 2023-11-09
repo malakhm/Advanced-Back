@@ -33,6 +33,11 @@ const getDesign = async (req, res) => {
     });
   }
 
+
+
+
+ 
+
   try {
     const design = await Design.findById(id).populate('companyId').populate('categoryId');
 

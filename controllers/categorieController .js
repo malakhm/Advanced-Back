@@ -37,8 +37,7 @@ const getCategorie = async (req, res) => {
       }
     );
   }
-  const categorie = await Categorie.findById(id).populate('companies');
-
+  const categorie = await Categorie.findById(id)
   if (!categorie) {
     return res.status(404).json(
       { data: null,
@@ -58,9 +57,9 @@ const getCategorie = async (req, res) => {
 
 // Create a new categorie
 const createCategorie = async (req, res) => {
-  const { name,companies } = req.body;
+  const { name } = req.body;
   try {
-    const categorie = await Categorie.create({ name,companies});
+    const categorie = await Categorie.create({ name});
 
     res.json(
       { data: categorie,

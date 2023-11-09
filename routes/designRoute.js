@@ -1,6 +1,7 @@
 import express from 'express';
 import { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign } from '../controllers/designController.js';
 import { uploadForDesign } from '../configuration/multer.js'; 
+import Design from '../models/designModel.js'
 
 const router = express.Router();
 
@@ -18,5 +19,20 @@ router.patch('/:id', uploadForDesign.array('images', 5), updateDesign);
 
 // Delete a specific design by ID
 router.delete('/:id', deleteDesign);
+
+
+router.get('/company/:companyId', async (req, res) => {
+    try {
+      const companyId = req.params.companyId;
+      const designs = await Design.find({ companyId });
+      res.json(designs);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+
+  
 
 export default router;
