@@ -8,10 +8,12 @@ import categoriesRoutes from './routes/categoriesRoute.js';
 import designRoutes from './routes/designRoute.js';
 import db from './configuration/db.js'; 
 const app = express();
-
+const cors = require('cors');
 
 // Middleware
 app.use(express.json());
+app.use(cors());
+ res.setHeader('Access-Control-Allow-credentials', 'true');
 dotenv.config();
 
 
