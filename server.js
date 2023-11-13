@@ -8,16 +8,12 @@ import categoriesRoutes from './routes/categoriesRoute.js';
 import designRoutes from './routes/designRoute.js';
 import db from './configuration/db.js'; 
 const app = express();
-const cors = require('cors');
-const corsOptions = {
-  origin: 'https://spaceloom.onrender.com/',
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
+const cors = require('');
 
 // Middleware
 app.use(express.json());
-app.use(cors(corsOptions));
-res.setHeader('Access-Control-Allow-credentials', 'true');
+app.use(cors());
+res.setHeader('Access-Control-Allow-credentials', '*');
 dotenv.config();
 
 
