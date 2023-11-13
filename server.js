@@ -13,7 +13,7 @@ const cors = require('cors');
 // Middleware
 app.use(express.json());
 app.use(cors());
- res.setHeader('Access-Control-Allow-credentials', 'true');
+res.setHeader('Access-Control-Allow-credentials', 'true');
 dotenv.config();
 
 
