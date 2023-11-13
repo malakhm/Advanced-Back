@@ -9,15 +9,11 @@ import designRoutes from './routes/designRoute.js';
 import db from './configuration/db.js'; 
 const app = express();
 const cors = require('cors');
-const corsOptions ={
-  origin:'*', 
-  credentials:true,          
-}
 
 
 // Middleware
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 dotenv.config();
 
 
