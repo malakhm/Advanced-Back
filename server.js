@@ -7,8 +7,9 @@ import adminRoutes from './routes/adminRoute.js';
 import categoriesRoutes from './routes/categoriesRoute.js';
 import designRoutes from './routes/designRoute.js';
 import db from './configuration/db.js'; 
+import  { cors }  from ('cors');
 const app = express();
-const cors = require('cors');
+
 
 
 // Middleware
