@@ -1,25 +1,11 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 dotenv.config();
 
-const { DB_URL, DB_NAME } = process.env;
 
-const connectionString = `${DB_URL}/${DB_NAME}`;
+const sequelize = new Sequelize('Spaceloom', 'sa', `${process.env.DB_PASSWORD}`, {
+    host: 'localhost',
+    dialect: 'mssql'
+  });
 
-mongoose.connect(connectionString, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
-});
-
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-
-export default db;
+export default sequelize;
