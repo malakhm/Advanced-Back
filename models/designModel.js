@@ -1,28 +1,22 @@
-import mongoose from 'mongoose';
+import sequelize from "../configuration/db.js";
+import { DataTypes } from "sequelize";
 
-const { Schema, model } = mongoose;
+import Company from "./companyModel.js";
 
-const designSchema = new Schema({
-    images: {
-        type: [String],
+const Design = sequelize.define(
+  'Design',
+  {
+    image: {
+        type: DataTypes.STRING,
         required: true,
-    },
-    companyId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'companies',
-      required: true,
-    },
-    categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'categories',
-      required: true,
-    },
+    }
 }, { timestamps: true });
 
-designSchema.pre('find', function (next) {
-  this.populate('companyId').populate('categoryId');
-  next();
-});
 
+Company.hasMany(Design);
 
-export default model('designs', designSchema);
+Design.belongsTo(Company);
+
+Design.sync();
+
+export default Design
