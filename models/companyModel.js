@@ -6,28 +6,32 @@ const Company = sequelize.define(
   {
   name: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: true,
   },
   telephone: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: true,
   },
   logo: {
     type: DataTypes.STRING,
-    required: true
+    allowNull: true
   },
   location: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: true,
   },
   website_link: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING,
-    required: true,
+    allowNull: true,
   },
+  categories: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  }
 
 }  ,{
   timestamps: true,

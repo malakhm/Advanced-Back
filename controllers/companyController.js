@@ -85,23 +85,32 @@ const updateCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
-    let updateFields = {
+    const  {
       name,
       telephone,
       email,
       location,
       categories
-    };
+    } = req.body
 
     if (req.file) {
       const image = req.file.path;
       updateFields.logo = image;
     }
 
-    const updatedCompany = await Company.findByIdAndUpdate(
-      id,
-      updateFields,
-      { new: true }
+    const updatedCompany = await Company.update(
+      
+      {
+        name,
+        telephone,
+        email,
+        location,
+        categories
+      },
+      {
+        where: {id}
+      }
+  
     );
 
     if (!updatedCompany) {
@@ -132,15 +141,9 @@ const updateCompany = async (req, res) => {
 // Delete a Company
 const deleteCompany = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Company not found',
-      status: 404,
-    });
-  }
+
   try {
-    const company = await Company.findByIdAndDelete(id);
+    const company = await Company.destroy({where:{id}});
     if (!company) {
       return res.status(404).json({
         data: null,
