@@ -1,6 +1,6 @@
 import express from 'express';
 import { createCompany, getAllCompanies, getCompany, deleteCompany, updateCompany } from '../controllers/companyController.js';
-import { uploadForCompany } from '../configuration/multer.js'; 
+import { upload } from '../configuration/cloudinary.js'; 
 
 
 const router = express.Router();
@@ -12,12 +12,12 @@ router.get('/', getAllCompanies);
 router.get('/:id', getCompany);
 
 // Add a new company
-router.post('/', uploadForCompany.single('logo'), createCompany);
+router.post('/', upload.single('logo'), createCompany);
 router.use(express.urlencoded({ extended: true }));
 
 
 // Update a company
-router.patch('/:id',uploadForCompany.single('logo'), updateCompany);
+router.put('/:id',upload.single('logo'), updateCompany);
 
 
 // Delete a company
