@@ -28,7 +28,7 @@ app.use('/api/feedbacks', feedbackRoutes)
 app.use('/api/categories', categoryRoute)
 app.use('/api/admins',adminRoutes);
 app.use('/api/designs', designRoutes);
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 
 //connecting to db
 sequelize.sync({ force: false });
