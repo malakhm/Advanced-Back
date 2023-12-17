@@ -6,16 +6,16 @@ const Admin = sequelize.define(
   {
     username: {
       type: DataTypes.STRING,
-      required: true,
+      allowNull: false,
     },
 
     password: {
       type: DataTypes.STRING,
-      required: true,
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      required: true,
+      allowNull: false,
     },
   },
   {

@@ -1,45 +1,36 @@
+import sequelize from "../configuration/db.js";
+import { DataTypes } from "sequelize";
 
-import mongoose from 'mongoose';
-
-const { Schema, model } = mongoose;
-
-const companiesSchema = new Schema({
+const Company = sequelize.define(
+  'Company',
+  {
   name: {
-    type: String,
+    type: DataTypes.STRING,
     required: true,
   },
   telephone: {
-    type: String,
+    type: DataTypes.STRING,
     required: true,
   },
   logo: {
-    type: String,
+    type: DataTypes.STRING,
     required: true
   },
   location: {
-    type: String,
+    type: DataTypes.STRING,
     required: true,
   },
   website_link: {
-    type: String,
+    type: DataTypes.STRING,
     required: true,
   },
   email: {
-    type: String,
+    type: DataTypes.STRING,
     required: true,
   },
-  categories:[
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'categories',
-      require:true
-    },
-  ],
-}, { timestamps: true });
 
-companiesSchema.pre('find', function(next) {
-  this.populate('categories');
-  next();
+}  ,{
+  timestamps: true,
 });
 
-export default model('companies', companiesSchema);
+export default Company

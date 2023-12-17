@@ -1,11 +1,10 @@
 import Company from '../models/companyModel.js';
-import mongoose from 'mongoose';
-import path from 'path';
+
 
 // Get all companies
 const getAllCompanies = async (req, res) => {
   try {
-    const companies = await Company.find();
+    const companies = await Company.findAll();
     res.status(200).json({
       data: companies,
       message: 'success',
@@ -24,16 +23,10 @@ const getAllCompanies = async (req, res) => {
 const getCompany = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Company not found',
-      status: 404,
-    });
-  }
+
 
   try {
-    const company = await Company.findById(id).populate('categories');
+    const company = await Company.findByPk(id)
     if (!company) {
       return res.status(404).json({
         data: null,
@@ -91,21 +84,13 @@ const createCompany = async (req, res) => {
 const updateCompany = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Company not found',
-      status: 404,
-    });
-  }
-
   try {
     let updateFields = {
-      name: req.body.name,
-      telephone: req.body.telephone,
-      email: req.body.email,
-      location: req.body.location,
-      categories: req.body.categories, // Include the categories field
+      name,
+      telephone,
+      email,
+      location,
+      categories
     };
 
     if (req.file) {
