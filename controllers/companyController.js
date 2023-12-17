@@ -85,21 +85,13 @@ const updateCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
-<<<<<<< HEAD
-    let updateFields = {
-=======
     const  {
->>>>>>> MalakHamwi
       name,
       telephone,
       email,
       location,
       categories
-<<<<<<< HEAD
-    };
-=======
     } = req.body
->>>>>>> MalakHamwi
 
     if (req.file) {
       const image = req.file.path;
