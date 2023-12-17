@@ -15,7 +15,6 @@ router.post('/', createCategorie);
 // Update a category
 router.patch('/:id', updateCategorie);
 
-
 // Delete a category
 router.delete('/:id', deleteCategorie);
 

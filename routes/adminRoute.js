@@ -15,7 +15,6 @@ router.post('/', createAdmin);
 // Update a company
 router.patch('/:id', updateAdmin);
 
-
 // Delete a company
 router.delete('/:id', deleteAdmin);
 
