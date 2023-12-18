@@ -1,22 +1,29 @@
-import mongoose from 'mongoose';
+import { DataTypes } from "sequelize";
+import sequelize from "../configuration/db.js";
 
-const { Schema, model } = mongoose;
-
-
-const feedbackSchema = new Schema({
-    content: {
-        type: String,
-        required: true
+const Feedback = sequelize.define(
+    "Feedback",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        content: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
     },
-    first_name: {
-        type: String,
-        required: true
-    },
-    last_name: {
-        type: String,
-        required: true
-    }
+    { timestamps: true }
+)
 
-}, {timestamps: true})
 
-export default model('Feedback', feedbackSchema);
+export default Feedback;
