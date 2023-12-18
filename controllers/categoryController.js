@@ -1,9 +1,13 @@
 import Category from "../models/categoryModel.js";
+import Company from "../models/companyModel.js";
+import Design from "../models/designModel.js";
 
 // Get all Categories
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({
+      include: [{ model: Company, as: "Company" }],
+    });
     return res.status(200).json({
       data: categories,
       message: "success",
@@ -22,7 +26,9 @@ export const getCategories = async (req, res) => {
 export const getCategory = async (req, res) => {
   const id = req.params.id;
   try {
-    const category = await Category.findByPk(id);
+    const category = await Category.findByPk(id, {
+      include: [{ model: Company, as: "Company" }],
+    });
     if (category) {
       return res.status(200).json({
         data: category,
@@ -47,7 +53,7 @@ export const getCategory = async (req, res) => {
 
 // Create a new Category
 export const createCategory = async (req, res) => {
-  const name = req.body.name;
+  const { name, CompanyId } = req.body;
   try {
     const existingName = await Category.findOne({ where: { name } });
     if (existingName) {
@@ -57,8 +63,11 @@ export const createCategory = async (req, res) => {
         error: true,
       });
     }
-    const category = await Category.create({ name });
-    // console.log("New Category", Category);
+    const category = await Category.create(
+      { name, CompanyId: CompanyId },
+      { include: [{ model: Company, as: "Company" }] }
+    );
+
     res.status(201).json({
       data: category,
       message: "Category created successfully!",
@@ -129,10 +138,11 @@ export const deleteCategory = async (req, res) => {
         error: true,
       });
     }
+    const deletedDesigns = await Design.destroy({ where: { CategoryId: id } });
     const deletedCategory = await Category.destroy({ where: { id } });
     if (deletedCategory) {
       return res.status(200).json({
-        message: `Category is deleted!`,
+        message: `Category and associated designs are deleted!`,
         status: 200,
         error: false,
       });
