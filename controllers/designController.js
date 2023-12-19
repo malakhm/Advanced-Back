@@ -102,9 +102,9 @@ const updateDesign = async (req, res) => {
 
     //store images on cloudinary server
   const uploadToCloudinary = promisify(cloudinary.v2.uploader.upload);
-  console.log(req.body); // Log the entire request body
-  console.log(req.files.length); // Log the files array
-  console.log(req.headers);
+  // console.log(req.body); // Log the entire request body
+  // console.log(req.files.length); // Log the files array
+  // console.log(req.headers);
 
   const cloudinaryUrls = await Promise.all(
 

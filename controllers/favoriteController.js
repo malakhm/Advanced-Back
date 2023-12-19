@@ -1,4 +1,4 @@
-import Favorite from "../models/favoriteModel.js"
+import Favorite from "../models/favoriteModel.js";
 import User from "../models/userModel.js";
 import Design from "../models/designModel.js";
 
@@ -11,12 +11,14 @@ export const getFavorites = async (req, res) => {
         { model: User, as: "User" },
       ],
     });
+ 
     return res.status(200).json({
       data: favorites,
       message: "success",
       status: 200,
     });
   } catch (error) {
+    console.error("Error fetching favorites:", error)
     res.status(400).json({
       data: null,
       message: error.message,
@@ -24,6 +26,7 @@ export const getFavorites = async (req, res) => {
     });
   }
 };
+
 
 // Get a single favorite by ID
 export const getFavorite = async (req, res) => {
@@ -59,14 +62,13 @@ export const getFavorite = async (req, res) => {
 
 // Get favorites chosen by a single user
 export const getFavoritesByUser = async (req, res) => {
-  const userId = req.params.userId;
+  const {UserId} = req.params;
+  console.log("user", UserId);
   try {
     const favorites = await Favorite.findAll({
-      where: { UserId: userId },
-      include: [
-        { model: Design, as: "Design" },
-        { model: User, as: "User" },
-      ],
+      where: { UserId: UserId }, 
+      include: [Design,User]
+      
     });
     return res.status(200).json({
       data: favorites,
@@ -81,6 +83,7 @@ export const getFavoritesByUser = async (req, res) => {
     });
   }
 };
+
 
 // Create Favorite
 export const createFavorite = async (req, res) => {
@@ -103,48 +106,48 @@ export const createFavorite = async (req, res) => {
   }
 };
 
-// Update an existing Favorite
-export const updateFavorite = async (req, res) => {
-  try {
-    const id = req.params.id;
+// // Update an existing Favorite
+// export const updateFavorite = async (req, res) => {
+//   try {
+//     const id = req.params.id;
 
-    const existingFavorite = await Favorite.findByPk(id);
-    if (!existingFavorite) {
-      return res.status(404).json({
-        data: null,
-        message: `Favorite with Id: ${id} not found!`,
-        status: 404,
-      });
-    }
-    await Favorite.update(
-      { ...req.body },
-      {
-        where: { id },
-      }
-    );
+//     const existingFavorite = await Favorite.findByPk(id);
+//     if (!existingFavorite) {
+//       return res.status(404).json({
+//         data: null,
+//         message: `Favorite with Id: ${id} not found!`,
+//         status: 404,
+//       });
+//     }
+//     await Favorite.update(
+//       { ...req.body },
+//       {
+//         where: { id },
+//       }
+//     );
 
-    const updatedFavorite = await Favorite.findByPk(id);
-    if (updatedFavorite) {
-      return res.status(200).json({
-        data: updatedFavorite,
-        message: `Favorite with ID: ${id} updated successfully!`,
-        status: 200,
-      });
-    } else {
-      return res.status(500).json({
-        data: null,
-        message: `Failed to retrieve updated Favorite with ID: ${id}`,
-        status: 500,
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      data: null,
-      message: error.message,
-      status: 500,
-    });
-  }
-};
+//     const updatedFavorite = await Favorite.findByPk(id);
+//     if (updatedFavorite) {
+//       return res.status(200).json({
+//         data: updatedFavorite,
+//         message: `Favorite with ID: ${id} updated successfully!`,
+//         status: 200,
+//       });
+//     } else {
+//       return res.status(500).json({
+//         data: null,
+//         message: `Failed to retrieve updated Favorite with ID: ${id}`,
+//         status: 500,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(500).json({
+//       data: null,
+//       message: error.message,
+//       status: 500,
+//     });
+//   }
+// };
 
 // Delete Favorite
 export const deleteFavorite = async (req, res) => {

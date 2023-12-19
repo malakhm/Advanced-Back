@@ -5,25 +5,16 @@ import Design from "./designModel.js";
 
 const Favorite = sequelize.define(
   "Favorite",
-  {
-    UserId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: "id",
-      },
-    },
-    DesignId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Design,
-        key: "id",
-      },
-    },
-  },
+  {},
   {
     timestamps: true,
   }
 );
+
+User.hasMany(Favorite, { foreignKey: "UserId" });
+Favorite.belongsTo(User, { foreignKey: "UserId" });
+
+Design.hasMany(Favorite, { foreignKey: "DesignId" });
+Favorite.belongsTo(Design, { foreignKey: "DesignId" });
 
 export default Favorite;
