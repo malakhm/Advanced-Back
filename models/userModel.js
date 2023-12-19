@@ -1,20 +1,27 @@
 import sequelize from "../configuration/db.js";
 import { DataTypes } from "sequelize";
 
-const Admin = sequelize.define(
-  "Admin",
+const User = sequelize.define(
+  "User",
   {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-
-    password: {
+    image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM(["Admin", "User"]),
       allowNull: false,
     },
   },
@@ -23,4 +30,4 @@ const Admin = sequelize.define(
   }
 );
 
-export default Admin;
+export default User;

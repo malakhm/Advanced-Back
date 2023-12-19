@@ -3,9 +3,10 @@ import express from "express";
 import sequelize from "./configuration/db.js";
 import companiesRoutes from "./routes/companyRoute.js";
 import feedbackRoutes from "./routes/feedbacks.js";
-import adminRoutes from "./routes/adminRoute.js";
+import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
-import designRoutes from "./routes/designRoute.js";
+// import designRoutes from "./routes/designRoute.js";
+import messageRoute from "./routes/messageRoute.js"
 import cors from "cors";
 import bodyParser from "body-parser";
 
@@ -23,15 +24,16 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/api/companies', companiesRoutes);
-app.use('/api/feedbacks', feedbackRoutes)
-app.use('/api/categories', categoryRoute)
-app.use('/api/admins',adminRoutes);
-app.use('/api/designs', designRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use("/api/companies", companiesRoutes);
+app.use("/api/feedbacks", feedbackRoutes);
+app.use("/api/categories", categoryRoute);
+app.use("/api/users", userRoute);
+// app.use('/api/designs', designRoutes);
+app.use("/api/messages", messageRoute);
+app.use("/uploads", express.static("uploads"));
 
 //connecting to db
-sequelize.sync({ force: false});
+sequelize.sync({ force: false });
 
 //Port
 const port = process.env.PORT;
