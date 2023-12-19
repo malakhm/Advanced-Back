@@ -5,7 +5,7 @@ import Feedback from '../models/feedbackmodel.js';
 
 const getFeedbacks = async (req, res) => {
   try {
-    const feedbacks = await Feedback.find();
+    const feedbacks = await Feedback.findAll();
     res.status(200).json({
       data: feedbacks,
       message: 'success',
@@ -26,7 +26,7 @@ const getFeedback = async (req, res) => {
   try {
     const feedback = await Feedback.findByPk(id);
     if (feedback) {
-      res.status(200).json(article);
+      res.status(200).json(feedback);
     }
     else {
       res.status(404).json({error: "feedback not found"});
@@ -38,11 +38,10 @@ const getFeedback = async (req, res) => {
 }
 
 // create a new Feedback 
-
 const createFeedback = async (req, res) => {
-  const { content, first_name, last_name } = req.body;
+  const { content } = req.body;
   try {
-    const feedback = await Feedback.create({content, first_name, last_name});
+    const feedback = await Feedback.create({content});
     res.status(201).json({
       data: feedback,
       message: "feedback created!",
@@ -77,29 +76,75 @@ const deleteFeedback = async (req, res) => {
 }
 
 // update feedback 
+// const updateFeedback = async (req, res) => {
+//   const { id } = req.params;
 
+//   try {
+//     const feedback = { content } = req.body;
+//     if(feedback) {
+//       const newFeedback = await Feedback.update(
+//         { content }, {where: { id }}
+//       );
+//       if (!newFeedback) {
+//         return res.status(404).json({
+//           data: null,
+//           message: 'feedback not found',
+//           status: 404,
+//         });
+//       }
+//     }
+
+//   } catch (error) {
+//     res.status(500).json({
+//       data: null,
+//       message: error.message,
+//       status: 500,
+//     });
+//   }
+// };
+
+//update feedback
 const updateFeedback = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const feedback = { content, first_name, last_name } = req.body;
-    if(feedback) {
-      const newFeedback = await Feedback.update(
-        { content, first_name, last_name }, {where: { id }}
-      );
-      if (!newFeedback) {
-        return res.status(404).json({
-          data: null,
-          message: 'feedback not found',
-          status: 404,
-        });
-      }
+    const { content } = req.body;
+
+    // Validate content presence
+    if (!content) {
+      return res.status(400).json({
+        data: null,
+        message: 'Content is required for feedback update',
+        status: 400,
+      });
     }
 
+    // Perform the update
+    const updatedFeedback = await Feedback.update(
+      { content },
+      { where: { id }, returning: true }
+    );
+
+    // Check if feedback was found and updated
+    if (!updatedFeedback) {
+      return res.status(404).json({
+        data: null,
+        message: 'Feedback not found',
+        status: 404,
+      });
+    }
+
+    // Send success response
+    return res.status(200).json({
+      data: updatedFeedback,
+      message: 'Feedback updated successfully',
+      status: 200,
+    });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       data: null,
-      message: error.message,
+      message: {"catch-error": error.message},
       status: 500,
     });
   }
