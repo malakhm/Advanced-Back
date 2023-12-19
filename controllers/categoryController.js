@@ -1,6 +1,6 @@
 import Category from "../models/categoryModel.js";
 import Company from "../models/companyModel.js";
-// import Design from "../models/designModel.js";
+import Design from "../models/designModel.js";
 
 // Get all Categories
 export const getCategories = async (req, res) => {
