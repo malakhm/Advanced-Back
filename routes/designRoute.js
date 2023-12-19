@@ -1,38 +1,38 @@
-import express from 'express';
-import { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign } from '../controllers/designController.js';
-import { upload } from '../configuration/cloudinary.js'; 
-import Design from '../models/designModel.js'
+// import express from 'express';
+// import { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign } from '../controllers/designController.js';
+// import { upload } from '../configuration/cloudinary.js'; 
+// import Design from '../models/designModel.js'
 
-const router = express.Router();
+// const router = express.Router();
 
-// Create a new design with image upload
-router.post('/', upload.array('images', 5), createDesign);
+// // Create a new design with image upload
+// router.post('/', upload.array('images', 5), createDesign);
 
-// Get all designs
-router.get('/', getAllDesigns);
+// // Get all designs
+// router.get('/', getAllDesigns);
 
-// Get a specific design by ID
-router.get('/:id', getDesign);
+// // Get a specific design by ID
+// router.get('/:id', getDesign);
 
-// Update a specific design by ID
-router.patch('/:id', upload.array('images', 5), updateDesign);
+// // Update a specific design by ID
+// router.patch('/:id', upload.array('images', 5), updateDesign);
 
-// Delete a specific design by ID
-router.delete('/:id', deleteDesign);
+// // Delete a specific design by ID
+// router.delete('/:id', deleteDesign);
 
 
-router.get('/company/:companyId', async (req, res) => {
-    try {
-      const companyId = req.params.companyId;
-      const designs = await Design.find({ companyId });
-      res.json(designs);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
+// router.get('/company/:companyId', async (req, res) => {
+//     try {
+//       const companyId = req.params.companyId;
+//       const designs = await Design.find({ companyId });
+//       res.json(designs);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'Internal server error' });
+//     }
+//   });
 
 
   
 
-export default router;
+// export default router;

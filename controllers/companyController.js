@@ -1,5 +1,53 @@
-import Company from '../models/companyModel.js';
+import Company from "../models/companyModel.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
+// sign in
+const signInCompany = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json(
+      //400 means bad request
+      {
+        message: "email and password are required fields! ",
+      }
+    )
+  try {
+    const findEmail = await Company.findOne({ where: { email: email } });
+
+    if (!findEmail) {
+      res.status(404).json({ message: 'not found' });
+    } else {
+      // console.log(findEmail.password)
+      const match = await bcrypt.compare(password, findEmail.password);
+      if (match) {
+        // Authenticate user with jwt
+        // console.log(match)
+        const token = jwt.sign(
+          {
+            id: findEmail.id,
+         
+          },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: "1d" }
+        );
+
+        res.status(200).send({
+          id: findEmail.id,
+          name: findEmail.name,
+          email: findEmail.email,
+          phone: findEmail.phone,
+          location: findEmail.location,
+          website_link: findEmail.website_link,
+          logo: findEmail.logo,
+          accessToken: token,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 // Get all companies
 const getAllCompanies = async (req, res) => {
@@ -7,7 +55,7 @@ const getAllCompanies = async (req, res) => {
     const companies = await Company.findAll();
     res.status(200).json({
       data: companies,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -23,21 +71,19 @@ const getAllCompanies = async (req, res) => {
 const getCompany = async (req, res) => {
   const { id } = req.params;
 
- 
-
   try {
-    const company = await Company.findByPk(id)
+    const company = await Company.findByPk(id);
     if (!company) {
       return res.status(404).json({
         data: null,
-        message: 'Company not found',
+        message: "Company not found",
         status: 404,
       });
     }
 
     res.status(200).json({
       data: company,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -51,24 +97,39 @@ const getCompany = async (req, res) => {
 
 // Create a new Company
 const createCompany = async (req, res) => {
-  const { name, telephone, location, website_link, email, categories } = req.body;
+  const { name, phone, location, website_link, email, categories, password } =
+    req.body;
+
+  const oldUser = await Company.findOne({ where: { email: email } });
+  if (oldUser) return res.status(409).json("user already exists!!");
 
   try {
-    const logo = req.file.path; 
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(
+        password
+      )
+    ) {
+      res.status(422).json({ message: "Invalid password" });
+      return;
+    } else {
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const logo = req.file.path;
 
     const company = await Company.create({
       name,
-      telephone,
       logo,
       location,
       website_link,
       email,
+      phone,
+      password: hashedPassword,
       categories,
     });
 
     res.status(201).json({
       data: company,
-      message: 'Company created successfully',
+      message: "Company created successfully",
       status: 201,
     });
   } catch (err) {
@@ -80,18 +141,11 @@ const createCompany = async (req, res) => {
   }
 };
 
-
 const updateCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const  {
-      name,
-      telephone,
-      email,
-      location,
-      categories
-    } = req.body
+    const { name, telephone, email, location, categories } = req.body;
 
     if (req.file) {
       const image = req.file.path;
@@ -99,31 +153,29 @@ const updateCompany = async (req, res) => {
     }
 
     const updatedCompany = await Company.update(
-      
       {
         name,
         telephone,
         email,
         location,
-        categories
+        categories,
       },
       {
-        where: {id}
+        where: { id },
       }
-  
     );
 
     if (!updatedCompany) {
       return res.status(404).json({
         data: null,
-        message: 'Company not found',
+        message: "Company not found",
         status: 404,
       });
     }
 
     res.status(200).json({
       data: updatedCompany,
-      message: 'Company updated successfully',
+      message: "Company updated successfully",
       status: 200,
     });
   } catch (error) {
@@ -134,26 +186,23 @@ const updateCompany = async (req, res) => {
     });
   }
 };
-
-
-
 
 // Delete a Company
 const deleteCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const company = await Company.destroy({where:{id}});
+    const company = await Company.destroy({ where: { id } });
     if (!company) {
       return res.status(404).json({
         data: null,
-        message: 'Company not found',
+        message: "Company not found",
         status: 404,
       });
     }
     res.status(200).json({
       data: company,
-      message: 'Company deleted successfully',
+      message: "Company deleted successfully",
       status: 200,
     });
   } catch (error) {
@@ -165,4 +214,11 @@ const deleteCompany = async (req, res) => {
   }
 };
 
-export { createCompany, getAllCompanies, getCompany, deleteCompany, updateCompany };
+export {
+  createCompany,
+  getAllCompanies,
+  getCompany,
+  deleteCompany,
+  updateCompany,
+  signInCompany,
+};

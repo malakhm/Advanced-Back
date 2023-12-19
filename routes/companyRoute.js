@@ -1,10 +1,12 @@
 import express from 'express';
-import { createCompany, getAllCompanies, getCompany, deleteCompany, updateCompany } from '../controllers/companyController.js';
+import { createCompany,signInCompany, getAllCompanies, getCompany, deleteCompany, updateCompany } from '../controllers/companyController.js';
 import { upload } from '../configuration/cloudinary.js'; 
 
 
 const router = express.Router();
 
+// Sign In 
+router.post('/sign', signInCompany)
 // Get all companies
 router.get('/', getAllCompanies);
 
