@@ -8,7 +8,7 @@ import categoryRoute from './routes/categoryRoute.js';
 import router from './routes/designRoute.js';
 import cors  from "cors";
 import bodyParser from "body-parser";
-
+import errorHandler from './Middleware/hand.js'
 const app = express();
 
 // Middleware
@@ -33,6 +33,7 @@ app.use('/api/designs', router);
 //connecting to db
 sequelize.sync();
 
+app.use(errorHandler)
 //Port
 const port = process.env.PORT;
 app.listen(port, () => {

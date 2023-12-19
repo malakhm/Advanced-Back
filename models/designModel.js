@@ -7,7 +7,7 @@ const Design = sequelize.define(
   "Design",
   {
     images: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       get(){
         return this.getDataValue('images').split(';')       
@@ -19,11 +19,11 @@ const Design = sequelize.define(
   },
   { timestamps: true }
 );
-Company.hasMany(Design, { foreignKey: "CompanyId" });
-Design.belongsTo(Company, { foreignKey: "CompanyId" });
+// Company.hasMany(Design, { foreignKey: "CompanyId" });
+// Design.belongsTo(Company, { foreignKey: "CompanyId" });
 
-Category.hasMany(Design, { foreignKey: "CategoryId" });
-Design.belongsTo(Category, { foreignKey: "CategoryId" });
+// Category.hasMany(Design, { foreignKey: "CategoryId" });
+// Design.belongsTo(Category, { foreignKey: "CategoryId" });
 
 Design.sync();
 
