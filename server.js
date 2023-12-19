@@ -7,6 +7,7 @@ import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import designRoutes from "./routes/designRoute.js";
 import messageRoute from "./routes/messageRoute.js";
+import favorite from "./routes/favoriteRoute.js";
 import cors from "cors";
 import bodyParser from "body-parser";
 
@@ -28,12 +29,14 @@ app.use("/api/companies", companiesRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
 app.use("/api/categories", categoryRoute);
 app.use("/api/users", userRoute);
-app.use('/api/designs', designRoutes);
+app.use("/api/designs", designRoutes);
 app.use("/api/messages", messageRoute);
+app.use("/api/favorites", favoriteRoute);
+
 app.use("/uploads", express.static("uploads"));
 
 //connecting to db
-sequelize.sync({ force: false});
+sequelize.sync({ force: false });
 
 //Port
 const port = process.env.PORT;

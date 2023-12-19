@@ -1,6 +1,6 @@
 import Message from "../models/messageModel.js";
-// import Company from "../models/companyModel.js";
-// import User from "../models/userModel.js";
+import Company from "../models/companyModel.js";
+import User from "../models/userModel.js";
 
 // Get all Messages
 export const getMessages = async (req, res) => {
