@@ -6,7 +6,7 @@ import feedbackRoutes from "./routes/feedbacks.js";
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 // import designRoutes from "./routes/designRoute.js";
-import messageRoute from "./routes/messageRoute.js"
+import messageRoute from "./routes/messageRoute.js";
 import cors from "cors";
 import bodyParser from "body-parser";
 
