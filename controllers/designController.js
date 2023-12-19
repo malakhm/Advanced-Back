@@ -1,12 +1,10 @@
 // import Design from '../models/designModel.js'; 
-// import mongoose from 'mongoose';
-// import path from 'path';
 
 
-// // Get all designs
+// // // Get all designs
 // const getAllDesigns = async (req, res) => {
 //   try {
-//     const designs = await Design.find();
+//     const designs = await Design.findAll();
 //     res.status(200).json({
 //       data: designs,
 //       message: 'success',
@@ -24,22 +22,8 @@
 // // Get a single Design
 // const getDesign = async (req, res) => {
 //   const { id } = req.params;
-
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({
-//       data: null,
-//       message: 'Not found',
-//       status: 404,
-//     });
-//   }
-
-
-
-
- 
-
 //   try {
-//     const design = await Design.findById(id).populate('companyId').populate('categoryId');
+//     const design = await Design.findByPk(id);
 
 //     if (!design) {
 //       return res.status(404).json({
@@ -65,13 +49,23 @@
 
 // // Create a new Design
 // const createDesign = async (req, res) => {
-//   const { companyId, categoryId } = req.body;
-
+//   const { CompanyId, CategoryId } = req.body;
 
 //   try {
-//     const imagesArray = req.files.map(file => path.join('uploads/design', file.filename)); // Store image paths
+//     const {
+//       image1,
+//       image2,
+//       image3,
+//       image4,
+//       image5
+//     }= req.files
+//     // const imagesArray = req.files.map(file => path.join('uploads/design', file.filename)); // Store image paths
+//     const design = await Design.create({ CompanyId, CategoryId , image1,
+//       image2,
+//       image3,
+//       image4,
+//       image5});
 
-//     const design = await Design.create({ images: imagesArray, companyId, categoryId });
 
 //     res.status(201).json({
 //       data: design,
@@ -178,5 +172,5 @@
 //   }
 // };
 
-// // Export functions
+// // // Export functions
 // export { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign };
