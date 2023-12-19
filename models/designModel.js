@@ -1,26 +1,24 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../configuration/db.js';
+// import sequelize from "../configuration/db.js";
+// import { DataTypes } from "sequelize";
 
-import Company from './companyModel.js';
-import Category from './categoryModel.js';
+// import Company from "./companyModel.js";
 
-const Design = sequelize.define(
-  'Design',
-  {
-    images: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+// const Design = sequelize.define(
+//   'Design',
+//   {
+//     image: {
+//         type: DataTypes.STRING,
+//         required: true,
+//     }
+// }, { timestamps: true });
 
-Company.hasMany(Design, { foreignKey: 'CompanyId' });
-Design.belongsTo(Company, { foreignKey: 'CompanyId' });
+// Company.hasMany(Design, { foreignKey: 'CompanyId' });
+// Design.belongsTo(Company, { foreignKey: 'CompanyId' });
 
-Category.hasMany(Design, { foreignKey: 'CategoryId' });
-Design.belongsTo(Category, { foreignKey: 'CategoryId' });
+// Company.hasMany(Design);
 
-export default Design;
+// Design.belongsTo(Company);
+
+// Design.sync();
+
+// export default Design

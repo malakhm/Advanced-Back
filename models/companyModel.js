@@ -6,11 +6,15 @@ const Company = sequelize.define(
   {
   name: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
-  telephone: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull:false
+  },
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   logo: {
     type: DataTypes.STRING,
@@ -18,23 +22,25 @@ const Company = sequelize.define(
   },
   location: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   website_link: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   categories: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   }
 
 }  ,{
   timestamps: true,
 });
+
+
 
 export default Company
