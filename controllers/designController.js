@@ -1,15 +1,15 @@
-import Design from '../models/designModel.js'; 
-import mongoose from 'mongoose';
-import path from 'path';
+import Design from "../models/designModel.js";
+import cloudinary from "cloudinary";
+import { promisify } from "util";
+import multer from "multer";
 
-
-// Get all designs
+// // Get all designs
 const getAllDesigns = async (req, res) => {
   try {
-    const designs = await Design.find();
+    const designs = await Design.findAll();
     res.status(200).json({
       data: designs,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -24,34 +24,20 @@ const getAllDesigns = async (req, res) => {
 // Get a single Design
 const getDesign = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Not found',
-      status: 404,
-    });
-  }
-
-
-
-
- 
-
   try {
-    const design = await Design.findById(id).populate('companyId').populate('categoryId');
+    const design = await Design.findByPk(id);
 
     if (!design) {
       return res.status(404).json({
         data: null,
-        message: 'Not found',
+        message: "Not found",
         status: 404,
       });
     }
 
     res.status(200).json({
       data: design,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -65,17 +51,40 @@ const getDesign = async (req, res) => {
 
 // Create a new Design
 const createDesign = async (req, res) => {
-  const { companyId, categoryId } = req.body;
+  const { CompanyId, CategoryId } = req.body;
 
+  //store images on cloudinary server
+  const uploadToCloudinary = promisify(cloudinary.v2.uploader.upload);
+  console.log(req.body); // Log the entire request body
+  console.log(req.files.length); // Log the files array
+  console.log(req.headers);
+
+  const cloudinaryUrls = await Promise.all(
+
+    req.files.map(async (file) => {
+      try {
+        const result = await uploadToCloudinary(file.path, {
+          folder: "designs",
+        });
+        return result.secure_url; // Use secure_url for HTTPS URL
+      } catch (error) {
+        console.error(`Error uploading image to Cloudinary: ${error.message}`);
+        return null; // Handle the error gracefully
+      }
+    })
+  );
+
+  console.log(cloudinaryUrls);
+  
 
   try {
-    const imagesArray = req.files.map(file => path.join('uploads/design', file.filename)); // Store image paths
-
-    const design = await Design.create({ images: imagesArray, companyId, categoryId });
+    const design = await Design.create({
+      images: cloudinaryUrls,
+    });
 
     res.status(201).json({
       data: design,
-      message: 'success',
+      message: "success",
       status: 201,
     });
   } catch (err) {
@@ -87,49 +96,49 @@ const createDesign = async (req, res) => {
   }
 };
 
-
 // Update a Design
 const updateDesign = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Not found',
-      status: 404,
-    });
-  }
+    //store images on cloudinary server
+  const uploadToCloudinary = promisify(cloudinary.v2.uploader.upload);
+  console.log(req.body); // Log the entire request body
+  console.log(req.files.length); // Log the files array
+  console.log(req.headers);
 
+  const cloudinaryUrls = await Promise.all(
+
+    req.files.map(async (file) => {
+      try {
+        const result = await uploadToCloudinary(file.path, {
+          folder: "designs",
+        });
+        return result.secure_url; // Use secure_url for HTTPS URL
+      } catch (error) {
+        console.error(`Error uploading image to Cloudinary: ${error.message}`);
+        return null; // Handle the error gracefully
+      }
+    })
+  );
+
+  console.log(cloudinaryUrls);
+  
   try {
-    const updatedFields = {}; 
+    ;
 
-    // Check if new images are provided
-    if (req.files && req.files.length > 0) {
-      const imagesArray = req.files.map(file => path.join('uploads/design', file.filename));
-      updatedFields.images = imagesArray;
-    }
-
-    
-    if (req.body.companyId) {
-      updatedFields.companyId = req.body.companyId;
-    }
-    if (req.body.categoryId) {
-      updatedFields.categoryId = req.body.categoryId;
-    }
-
-    const updatedDesign = await Design.findByIdAndUpdate(id, updatedFields, { new: true });
+    const updatedDesign = await Design.update(id, {images:cloudinaryUrls});
 
     if (!updatedDesign) {
       return res.status(404).json({
         data: null,
-        message: 'Not found',
+        message: "Not found",
         status: 404,
       });
     }
 
     res.status(200).json({
       data: updatedDesign,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -141,32 +150,24 @@ const updateDesign = async (req, res) => {
   }
 };
 
-
-
 // Delete a Design
 const deleteDesign = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      data: null,
-      message: 'Not found',
-      status: 404,
-    });
-  }
+
   try {
-    const design = await Design.findByIdAndDelete(id);
+    const design = await Design.destroy({where:{id}});
 
     if (!design) {
       return res.status(404).json({
         data: null,
-        message: 'Not found',
+        message: "Not found",
         status: 404,
       });
     }
 
     res.status(200).json({
       data: design,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -178,5 +179,5 @@ const deleteDesign = async (req, res) => {
   }
 };
 
-// Export functions
+// // Export functions
 export { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign };

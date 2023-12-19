@@ -14,7 +14,7 @@ cloudinary.config({
 const cloudinary_storage = new CloudinaryStorage ({
   cloudinary: cloudinary,
   params: {
-    folder: 'fund-for-all-images', //name of folder in cloudinary cloud
+    folder: 'designs', //name of folder in cloudinary cloud
   }
 });
 

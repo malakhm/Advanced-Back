@@ -1,8 +1,6 @@
-import sequelize from "../configuration/db.js";
-import { DataTypes } from "sequelize";
-import User from "./userModel.js";
-import Design from "./designModel.js";
-import Favorite from "./favoriteController.js"
+import Favorite from "../models/favoriteModel.js"
+import User from "../models/userModel.js";
+import Design from "../models/designModel.js";
 
 // Get all favorites
 export const getFavorites = async (req, res) => {

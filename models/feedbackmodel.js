@@ -13,14 +13,6 @@ const Feedback = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        }
     },
     { timestamps: true }
 )
