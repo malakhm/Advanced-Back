@@ -9,13 +9,13 @@ const Design = sequelize.define(
     images: {
       type: DataTypes.TEXT,
       allowNull: false,
-      get(){
-        return this.getDataValue('images').split(';')       
+      get() {
+        return this.getDataValue("images").split(";");
       },
-      set(val){
-        this.setDataValue('images', val.join(';'));
-      }
-    }
+      set(val) {
+        this.setDataValue("images", val.join(";"));
+      },
+    },
   },
   { timestamps: true }
 );
@@ -25,12 +25,4 @@ Design.belongsTo(Company, { foreignKey: "CompanyId" });
 Category.hasMany(Design, { foreignKey: "CategoryId", onDelete: "CASCADE" });
 Design.belongsTo(Category, { foreignKey: "CategoryId" });
 
-Design.sync();
-
-Company.hasMany(Design);
-
-Design.belongsTo(Company);
-
-Design.sync();
-
-export default Design
+export default Design;
