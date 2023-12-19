@@ -9,14 +9,6 @@ const Message = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    senderId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    receiverId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
   },
   {
     timestamps: true,

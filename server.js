@@ -33,7 +33,7 @@ app.use("/api/messages", messageRoute);
 app.use("/uploads", express.static("uploads"));
 
 //connecting to db
-sequelize.sync({ force: false });
+sequelize.sync({ force: false});
 
 //Port
 const port = process.env.PORT;

@@ -1,9 +1,16 @@
 import Message from "../models/messageModel.js";
+// import Company from "../models/companyModel.js";
+// import User from "../models/userModel.js";
 
 // Get all Messages
 export const getMessages = async (req, res) => {
   try {
-    const messages = await Message.findAll();
+    const messages = await Message.findAll({
+      include: [
+        { model: Company, as: "Company" },
+        { model: User, as: "User" },
+      ],
+    });
     return res.status(200).json({
       data: messages,
       message: "success",
@@ -22,7 +29,12 @@ export const getMessages = async (req, res) => {
 export const getMessage = async (req, res) => {
   const id = req.params.id;
   try {
-    const message = await Message.findByPk(id);
+    const message = await Message.findByPk(id, {
+      include: [
+        { model: Company, as: "Company" },
+        { model: User, as: "User" },
+      ],
+    });
     if (message) {
       return res.status(200).json({
         data: message,
@@ -47,9 +59,9 @@ export const getMessage = async (req, res) => {
 
 // Create a new Message
 export const createMessage = async (req, res) => {
-  const { content, senderId, receiverId } = req.body;
+  const { content, CompanyId, UserId } = req.body;
   try {
-    const message = await Message.create({ content });
+    const message = await Message.create({ content, CompanyId, UserId });
 
     res.status(201).json({
       data: message,
