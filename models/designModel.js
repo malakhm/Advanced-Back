@@ -19,10 +19,10 @@ const Design = sequelize.define(
   },
   { timestamps: true }
 );
-Company.hasMany(Design, { foreignKey: "CompanyId" });
+Company.hasMany(Design, { foreignKey: "CompanyId" ,onDelete: "CASCADE"});
 Design.belongsTo(Company, { foreignKey: "CompanyId" });
 
-Category.hasMany(Design, { foreignKey: "CategoryId" });
+Category.hasMany(Design, { foreignKey: "CategoryId", onDelete: "CASCADE" });
 Design.belongsTo(Category, { foreignKey: "CategoryId" });
 
 Design.sync();

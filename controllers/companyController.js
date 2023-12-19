@@ -1,7 +1,9 @@
 import Company from "../models/companyModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import Category from "../models/categoryModel.js";
+import Design from '../models/designModel.js'
+import Message from '../models/messageModel.js'
 // sign in
 const signInCompany = async (req, res) => {
   const { email, password } = req.body;
@@ -192,6 +194,9 @@ const deleteCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const delete_message = await Message.destroy({where:{CompanyId:id}})
+    const delete_category = await Category.destroy({where: {CompanyId: id}})
+    const delete_design = await Design.destroy({where: {CompanyId: id}})
     const company = await Company.destroy({ where: { id } });
     if (!company) {
       return res.status(404).json({
