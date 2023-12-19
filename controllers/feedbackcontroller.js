@@ -1,14 +1,13 @@
-import Feedback from '../models/feedbackmodel.js';
-
+import Feedback from "../models/feedbackmodel.js";
+import User from "../models/userModel.js";
 
 //get all feedbacks
-
 const getFeedbacks = async (req, res) => {
   try {
-    const feedbacks = await Feedback.findAll();
+    const feedbacks = await Feedback.findAll({ include: User });
     res.status(200).json({
       data: feedbacks,
-      message: 'success',
+      message: "success",
       status: 200,
     });
   } catch (error) {
@@ -24,45 +23,42 @@ const getFeedbacks = async (req, res) => {
 const getFeedback = async (req, res) => {
   const { id } = req.params;
   try {
-    const feedback = await Feedback.findByPk(id);
+    const feedback = await Feedback.findByPk(id, { include: User });
     if (feedback) {
       res.status(200).json(feedback);
+    } else {
+      res.status(404).json({ error: "feedback not found" });
     }
-    else {
-      res.status(404).json({error: "feedback not found"});
-    }
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json(error.message);
   }
-}
+};
 
-// create a new Feedback 
+// create a new Feedback
 const createFeedback = async (req, res) => {
-  const { content } = req.body;
+  const { content, UserId } = req.body;
   try {
-    const feedback = await Feedback.create({content});
+    const feedback = await Feedback.create({ content, UserId });
     res.status(201).json({
       data: feedback,
       message: "feedback created!",
       status: 201,
     });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json(error.message);
   }
-}
+};
 
 // delete a feedback
 const deleteFeedback = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
 
   try {
-    const feedback = await Feedback.destroy({where:{id}});
+    const feedback = await Feedback.destroy({ where: { id } });
     if (!feedback) {
       return res.status(404).json({
         data: null,
-        message: 'feedback not found',
+        message: "feedback not found",
         status: 404,
       });
     }
@@ -73,9 +69,9 @@ const deleteFeedback = async (req, res) => {
       status: 500,
     });
   }
-}
+};
 
-// update feedback 
+// update feedback
 // const updateFeedback = async (req, res) => {
 //   const { id } = req.params;
 
@@ -108,20 +104,20 @@ const updateFeedback = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const { content } = req.body;
+    // const { content } = req.body;
 
     // Validate content presence
     if (!content) {
       return res.status(400).json({
         data: null,
-        message: 'Content is required for feedback update',
+        message: "Content is required for feedback update",
         status: 400,
       });
     }
 
     // Perform the update
     const updatedFeedback = await Feedback.update(
-      { content },
+      { ...req.body },
       { where: { id }, returning: true }
     );
 
@@ -129,7 +125,7 @@ const updateFeedback = async (req, res) => {
     if (!updatedFeedback) {
       return res.status(404).json({
         data: null,
-        message: 'Feedback not found',
+        message: "Feedback not found",
         status: 404,
       });
     }
@@ -137,20 +133,18 @@ const updateFeedback = async (req, res) => {
     // Send success response
     return res.status(200).json({
       data: updatedFeedback,
-      message: 'Feedback updated successfully',
+      message: "Feedback updated successfully",
       status: 200,
     });
   } catch (error) {
     // Handle server error
     res.status(500).json({
       data: null,
-      message: {"catch-error": error.message},
+      message: { "catch-error": error.message },
       status: 500,
     });
   }
 };
-
-
 
 export {
   createFeedback,
