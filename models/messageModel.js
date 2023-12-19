@@ -1,6 +1,7 @@
 import sequelize from "../configuration/db.js";
 import { DataTypes } from "sequelize";
-
+import Company from "./companyModel.js";
+import User from "./userModel.js";
 const Message = sequelize.define(
   "Message",
   {
@@ -21,5 +22,11 @@ const Message = sequelize.define(
     timestamps: true,
   }
 );
+
+Company.hasMany(Message, { foreignKey: "CompanyId" });
+Message.belongsTo(Company, { foreignKey: "CompanyId" });
+
+User.hasMany(Message, { foreignKey: "UserId" });
+Message.belongsTo(User, { foreignKey: "UserId" });
 
 export default Message;
