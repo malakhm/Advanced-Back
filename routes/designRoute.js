@@ -6,7 +6,7 @@ import Design from '../models/designModel.js'
 const router = express.Router();
 
 // Create a new design with image upload
-router.post('/', upload.array('images'), createDesign);
+router.post('/', upload.array('images', 5), createDesign);
 
 // Get all designs
 router.get('/', getAllDesigns);
@@ -15,7 +15,7 @@ router.get('/', getAllDesigns);
 router.get('/:id', getDesign);
 
 // Update a specific design by ID
-router.patch('/:id', upload.array('images', 5), updateDesign);
+router.put('/:id', upload.array('images', 5), updateDesign);
 
 // Delete a specific design by ID
 router.delete('/:id', deleteDesign);

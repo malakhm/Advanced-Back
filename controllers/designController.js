@@ -2,11 +2,12 @@ import Design from "../models/designModel.js";
 import cloudinary from "cloudinary";
 import { promisify } from "util";
 import multer from "multer";
-
+import Company from "../models/companyModel.js";
+import Category from "../models/categoryModel.js";
 // // Get all designs
 const getAllDesigns = async (req, res) => {
   try {
-    const designs = await Design.findAll();
+    const designs = await Design.findAll( {include: [Company, Category]});
     res.status(200).json({
       data: designs,
       message: "success",
@@ -25,7 +26,7 @@ const getAllDesigns = async (req, res) => {
 const getDesign = async (req, res) => {
   const { id } = req.params;
   try {
-    const design = await Design.findByPk(id);
+    const design = await Design.findByPk(id,  {include: [Company, Category]});
 
     if (!design) {
       return res.status(404).json({
@@ -53,12 +54,10 @@ const getDesign = async (req, res) => {
 const createDesign = async (req, res) => {
   const { CompanyId, CategoryId } = req.body;
 
+
+  const data = await Design.findAll( {include: [Company, Category]})
   //store images on cloudinary server
   const uploadToCloudinary = promisify(cloudinary.v2.uploader.upload);
-  console.log(req.body); // Log the entire request body
-  console.log(req.files.length); // Log the files array
-  console.log(req.headers);
-
   const cloudinaryUrls = await Promise.all(
 
     req.files.map(async (file) => {
@@ -73,25 +72,23 @@ const createDesign = async (req, res) => {
       }
     })
   );
-
-  console.log(cloudinaryUrls);
-  
-
   try {
     const design = await Design.create({
       images: cloudinaryUrls,
+      CategoryId,
+      CompanyId
     });
 
     res.status(201).json({
-      data: design,
+      data: data,
       message: "success",
       status: 201,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       data: null,
       message: err.message,
-      status: 400,
+      status: 500,
     });
   }
 };
@@ -99,15 +96,12 @@ const createDesign = async (req, res) => {
 // Update a Design
 const updateDesign = async (req, res) => {
   const { id } = req.params;
+  const {CategoryId} = req.body
 
     //store images on cloudinary server
   const uploadToCloudinary = promisify(cloudinary.v2.uploader.upload);
-  // console.log(req.body); // Log the entire request body
-  // console.log(req.files.length); // Log the files array
-  // console.log(req.headers);
 
   const cloudinaryUrls = await Promise.all(
-
     req.files.map(async (file) => {
       try {
         const result = await uploadToCloudinary(file.path, {
@@ -121,12 +115,12 @@ const updateDesign = async (req, res) => {
     })
   );
 
-  console.log(cloudinaryUrls);
-  
   try {
-    ;
+    const data = await Design.findByPk( id,{include: [Company, Category]})
 
-    const updatedDesign = await Design.update(id, {images:cloudinaryUrls});
+
+    const updatedDesign = await Design.update( {images:cloudinaryUrls, CategoryId:CategoryId},
+       {where:{id}});
 
     if (!updatedDesign) {
       return res.status(404).json({
@@ -137,7 +131,7 @@ const updateDesign = async (req, res) => {
     }
 
     res.status(200).json({
-      data: updatedDesign,
+      data: data,
       message: "success",
       status: 200,
     });
