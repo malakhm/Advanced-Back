@@ -8,6 +8,7 @@ import {
 } from '../controllers/feedbackcontroller.js';
 
 // const Feedback = require('../models/feedbackmodel')
+import Verification from '../Middleware/jwt.js';
 
 const router = express.Router()
 
@@ -18,13 +19,13 @@ router.get('/', getFeedbacks)
 router.get('/:id', getFeedback)
 
 //add a new feedback
-router.post('/', createFeedback)
+router.post('/', Verification.verifyUser,createFeedback)// user and admin have access
 
-//delete a single feedback
-router.delete('/:id', deleteFeedback)
+//delete a single feedbak
+router.delete('/:id', Verification.verifyAdmin,deleteFeedback)// admin have access
 
 //update a single feedback
-router.patch('/:id', updateFeedback)
+router.patch('/:id', Verification.verifyUser,updateFeedback)// user and admin have access
 
 
 

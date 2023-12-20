@@ -7,12 +7,12 @@ import {
   getCategories,
   getCategory,
 } from "../controllers/categoryController.js";
-
+import Verification from "../Middleware/jwt.js";
 const router = express.Router();
 router.get("/", getCategories);
 router.get("/:id", getCategory);
-router.post("/", createCategory);
-router.delete("/:id", deleteCategory);
-router.put("/:id", updateCategory);
+router.post("/", Verification.verifyCompany,createCategory);// company and admin has access
+router.delete("/:id", Verification.verifyCompany, deleteCategory);
+router.put("/:id", Verification.verifyCompany,updateCategory);
 
 export default router;

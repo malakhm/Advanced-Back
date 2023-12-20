@@ -28,6 +28,7 @@ const signInCompany = async (req, res) => {
         const token = jwt.sign(
           {
             id: findEmail.id,
+            isCompany:true,
          
           },
           process.env.ACCESS_TOKEN_SECRET,

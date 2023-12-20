@@ -71,33 +71,7 @@ const deleteFeedback = async (req, res) => {
   }
 };
 
-// update feedback
-// const updateFeedback = async (req, res) => {
-//   const { id } = req.params;
 
-//   try {
-//     const feedback = { content } = req.body;
-//     if(feedback) {
-//       const newFeedback = await Feedback.update(
-//         { content }, {where: { id }}
-//       );
-//       if (!newFeedback) {
-//         return res.status(404).json({
-//           data: null,
-//           message: 'feedback not found',
-//           status: 404,
-//         });
-//       }
-//     }
-
-//   } catch (error) {
-//     res.status(500).json({
-//       data: null,
-//       message: error.message,
-//       status: 500,
-//     });
-//   }
-// };
 
 //update feedback
 const updateFeedback = async (req, res) => {
