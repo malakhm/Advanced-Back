@@ -219,7 +219,8 @@ export const signInUser = async (req, res) => {
         const token = jwt.sign(
           {
             id: findEmail.id,
-            role: findEmail.role
+            role: findEmail.role,
+            isCompany:false,
           },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "1d" }
