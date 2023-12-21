@@ -78,7 +78,7 @@ const updateFeedback = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // const { content } = req.body;
+    const { content } = req.body;
 
     // Validate content presence
     if (!content) {
