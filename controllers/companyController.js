@@ -117,17 +117,17 @@ const createCompany = async (req, res) => {
     } else {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const logo = req.file.path;
+    // const logo = req.file.path;
 
     const company = await Company.create({
       name,
-      logo,
+      // logo,
       location,
       website_link,
       email,
       phone,
       password: hashedPassword,
-      categories,
+      // categories,
     });
 
     res.status(201).json({
