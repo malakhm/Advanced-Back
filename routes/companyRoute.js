@@ -25,6 +25,8 @@ router.put('/:id', upload.single('logo'), updateCompany);//admin and company hav
 
 
 // Delete a company
-router.delete('/:id', Verification.verifyAdmin,deleteCompany);//admin only have access
+// router.delete('/:id', Verification.verifyAdmin,deleteCompany);//admin only have access
+router.delete('/:id',deleteCompany);//admin only have access
+
 
 export default router;

@@ -100,7 +100,7 @@ const getCompany = async (req, res) => {
 
 // Create a new Company
 const createCompany = async (req, res) => {
-  const { name, phone, location, website_link, email, categories, password } =
+  const { name, phone, location, website_link, email, password } =
     req.body;
 
   const oldUser = await Company.findOne({ where: { email: email } });
@@ -118,16 +118,15 @@ const createCompany = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     // const logo = req.file.path;
-
+   
     const company = await Company.create({
       name,
-      // logo,
       location,
       website_link,
       email,
       phone,
+      logo:req.file.path,
       password: hashedPassword,
-      // categories,
     });
 
     res.status(201).json({
@@ -148,7 +147,7 @@ const updateCompany = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const { name, telephone, email, location, categories } = req.body;
+    const { name, telephone, email, location } = req.body;
 
     if (req.file) {
       const logo = req.file.path;

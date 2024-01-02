@@ -32,10 +32,6 @@ const Company = sequelize.define(
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  categories: {
-    type: DataTypes.STRING,
-    allowNull: true,
   }
 
 }  ,{

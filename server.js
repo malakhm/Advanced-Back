@@ -26,7 +26,6 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
-
 // Routes
 app.use("/api/companies", companiesRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
