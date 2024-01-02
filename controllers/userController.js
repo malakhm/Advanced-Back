@@ -53,7 +53,7 @@ export const getUser = async (req, res) => {
 // Create a new user
 export const createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
-  const image = req.file.path;
+  // const image = req.file.path;
   try {
     const existingEmail = await User.findOne({ where: { email: email } });
     if (existingEmail) {
@@ -94,7 +94,7 @@ export const createUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      image,
+      // image,
     });
 
     return res.status(201).json({

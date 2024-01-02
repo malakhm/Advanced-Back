@@ -8,7 +8,10 @@ import categoryRoute from "./routes/categoryRoute.js";
 import router from "./routes/designRoute.js";
 import messageRoute from "./routes/messageRoute.js";
 import favoriteRoute from "./routes/favoriteRoute.js";
+import { Server } from "socket.io";
+import { createServer } from "http";
 import cors from "cors";
+
 import bodyParser from "body-parser";
 import errorHandler from "./Middleware/hand.js";
 const app = express();
@@ -35,15 +38,33 @@ app.use("/api/designs", router);
 app.use("/uploads", express.static("uploads"));
 
 //connecting to db
-sequelize.sync({ force: false});
+sequelize.sync({ force: false });
 
 app.use(errorHandler);
 //Port
-const port = process.env.PORT;
-app.listen(port, () => {
-  try {
-    console.log(`The server is connected on Port: ${port}`);
-  } catch (error) {
-    console.log(error);
-  }
+// const port = process.env.PORT;
+// app.listen(port, () => {
+//   try {
+//     console.log(`The server is connected on Port: ${port}`);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
 });
+io.on("connection", (socket) => {
+  console.log(socket.id);
+  socket.on("joinUserRoom", (user) => {
+    if (user.role === "user") {
+      socket.join("userRoom");
+    }
+  });
+});
+httpServer.listen(process.env.PORT);
+export default io;

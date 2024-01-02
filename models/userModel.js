@@ -10,7 +10,8 @@ const User = sequelize.define(
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: "../profileiamge.jpg",
     },
     email: {
       type: DataTypes.STRING,
@@ -22,7 +23,7 @@ const User = sequelize.define(
     },
     role: {
       type: DataTypes.ENUM(["Admin", "User"]),
-      allowNull: false,
+      defaultValue: "User",
     },
   },
   {
