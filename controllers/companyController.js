@@ -151,8 +151,15 @@ const updateCompany = async (req, res) => {
     const { name, telephone, email, location, categories } = req.body;
 
     if (req.file) {
-      const image = req.file.path;
-      updateFields.logo = image;
+      const logo = req.file.path;
+      const updateCompanyLogo = await Company.update(
+        {
+          logo:logo
+        },{
+          where: { id },
+        }
+      ) 
+      
     }
 
     const updatedCompany = await Company.update(
@@ -162,6 +169,7 @@ const updateCompany = async (req, res) => {
         email,
         location,
         categories,
+    
       },
       {
         where: { id },
