@@ -63,16 +63,30 @@ export const createCategory = async (req, res) => {
         error: true,
       });
     }
-    const category = await Category.create(
+    if(req.file){
+      const category = await Category.create(
+        { name, image:req.file.path,CompanyId: CompanyId },
+        { include: [{ model: Company, as: "Company" }] }
+        
+      );
+      res.status(201).json({
+        data: category,
+        message: "Category created successfully!",
+        status: 201,
+      });
+
+    }
+    else{const category = await Category.create(
       { name, CompanyId: CompanyId },
       { include: [{ model: Company, as: "Company" }] }
     );
-
     res.status(201).json({
       data: category,
       message: "Category created successfully!",
       status: 201,
     });
+    }
+    
   } catch (error) {
     res.status(500).json({
       data: null,

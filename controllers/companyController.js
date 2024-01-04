@@ -104,7 +104,8 @@ const createCompany = async (req, res) => {
     req.body;
 
   const oldUser = await Company.findOne({ where: { email: email } });
-  if (oldUser) return res.status(409).json("user already exists!!");
+  if (oldUser) {
+    return res.status(409).json({status: 409});}
 
   try {
     if (

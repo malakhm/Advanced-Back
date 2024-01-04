@@ -11,7 +11,8 @@ const User = sequelize.define(
     image: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: "../profileiamge.jpg",
+      defaultValue:'https://res.cloudinary.com/dxg6ijfbf/image/upload/v1704389759/designs/j4ohhmghrsx0wmx5pdqh.jpg'
+
     },
     email: {
       type: DataTypes.STRING,

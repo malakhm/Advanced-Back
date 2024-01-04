@@ -19,14 +19,13 @@ router.use(express.urlencoded({ extended: true }));
 
 
 // Update a company
-// router.put('/:id', Verification.verifyCompany,upload.single('logo'), updateCompany);//admin and company have access
-router.put('/:id', upload.single('logo'), updateCompany);//admin and company have access
+router.put('/:id', Verification.verifyCompany,upload.single('logo'), updateCompany);//admin and company have access
+
 
 
 
 // Delete a company
-// router.delete('/:id', Verification.verifyAdmin,deleteCompany);//admin only have access
-router.delete('/:id',deleteCompany);//admin only have access
+router.delete('/:id', Verification.verifyAdmin,deleteCompany);//admin only have access
 
 
 export default router;
