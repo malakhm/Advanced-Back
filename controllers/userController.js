@@ -231,6 +231,7 @@ export const signInUser = async (req, res) => {
           username: findEmail.username,
           email: findEmail.email,
           role: findEmail.role,
+          image: findEmail.image,
           accessToken: token,
         });
       }

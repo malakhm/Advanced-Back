@@ -19,7 +19,7 @@ const Company = sequelize.define(
   logo: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: "../profileiamge.jpg"
+    defaultValue:null
   },
   location: {
     type: DataTypes.STRING,

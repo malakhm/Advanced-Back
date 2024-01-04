@@ -118,6 +118,7 @@ const createCompany = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     // const logo = req.file.path;
+ 
    
     const company = await Company.create({
       name,
@@ -125,7 +126,7 @@ const createCompany = async (req, res) => {
       website_link,
       email,
       phone,
-      logo:req.file.path,
+      
       password: hashedPassword,
     });
 
@@ -167,7 +168,7 @@ const updateCompany = async (req, res) => {
         telephone,
         email,
         location,
-        categories,
+  
     
       },
       {
