@@ -63,30 +63,27 @@ export const createCategory = async (req, res) => {
         error: true,
       });
     }
-    if(req.file){
+    if (req.file) {
       const category = await Category.create(
-        { name, image:req.file.path,CompanyId: CompanyId },
+        { name, image: req.file.path, CompanyId: CompanyId },
         { include: [{ model: Company, as: "Company" }] }
-        
       );
       res.status(201).json({
         data: category,
         message: "Category created successfully!",
         status: 201,
       });
-
+    } else {
+      const category = await Category.create(
+        { name, CompanyId: CompanyId },
+        { include: [{ model: Company, as: "Company" }] }
+      );
+      res.status(201).json({
+        data: category,
+        message: "Category created successfully!",
+        status: 201,
+      });
     }
-    else{const category = await Category.create(
-      { name, CompanyId: CompanyId },
-      { include: [{ model: Company, as: "Company" }] }
-    );
-    res.status(201).json({
-      data: category,
-      message: "Category created successfully!",
-      status: 201,
-    });
-    }
-    
   } catch (error) {
     res.status(500).json({
       data: null,
@@ -97,37 +94,46 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// Update an existing Category
+// Update an existing category
 export const updateCategory = async (req, res) => {
   try {
     const id = req.params.id;
+    const { name } = req.body;
 
-    const existingCategory = await Category.findByPk(id);
-    if (!existingCategory) {
+    const existingCat = await Category.findByPk(id);
+    if (!existingCat) {
       return res.status(404).json({
         data: null,
         message: `Category with Id: ${id} not found!`,
         status: 404,
       });
     }
-    await Category.update(
-      { ...req.body },
+
+    let newImage = existingCat.image;
+
+    // Check if a new image file is uploaded
+    if (req.file) {
+      newImage = req.file.path;
+    }
+
+    const update = await Category.update(
+      { name: name, image: newImage },
       {
         where: { id },
       }
     );
 
-    const updatedCategory = await Category.findByPk(id);
-    if (updatedCategory) {
+    const updatedCat = await Category.findByPk(id);
+    if (updatedCat) {
       return res.status(200).json({
-        data: updatedCategory,
+        data: update,
         message: `Category with ID: ${id} updated successfully!`,
         status: 200,
       });
     } else {
       return res.status(400).json({
         data: null,
-        message: `Failed to update Category with ID: ${id}`,
+        message: `Failed to update category with ID: ${id}`,
         status: 400,
       });
     }
@@ -170,6 +176,36 @@ export const deleteCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: error.message,
+      status: 500,
+      error: true,
+    });
+  }
+};
+
+export const getCategoriesByCompanyId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const Categories = await Category.findAll({
+      where: { companyId: id },
+      include: [{ model: Company, as: 'Company' }],
+    });
+
+    if (!Categories || Categories.length === 0) {
+      return res.status(404).json({
+        message: 'No Category Found!',
+        status: 404,
+        error: true,
+      });
+    } else {
+      return res.status(200).json({
+        data: Categories,
+        message: 'success',
+        status: 200,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
       status: 500,
       error: true,
     });

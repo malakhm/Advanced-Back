@@ -169,28 +169,26 @@ const updateCompany = async (req, res) => {
         telephone,
         email,
         location,
-  
-    
       },
       {
         where: { id },
       }
     );
 
-    if (!updatedCompany) {
-      return res.status(404).json({
-        data: null,
-        message: "Company not found",
-        status: 404,
+    const updatedCompanie = await Company.findByPk(id);
+    if (updatedCompanie) {
+      return res.status(200).json({
+        data: updatedCompanie,
+        message: `User with ID: ${id} updated successfully!`,
+        status: 200,
       });
-    }
-
-    res.status(200).json({
-      data: updatedCompany,
-      message: "Company updated successfully",
-      status: 200,
-    });
-  } catch (error) {
+    } else {
+      return res.status(400).json({
+        data: null,
+        message: `Failed to update user with ID: ${id}`,
+        status: 400,
+      })}
+    } catch (error) {
     res.status(500).json({
       data: null,
       message: error.message,
