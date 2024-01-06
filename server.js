@@ -37,7 +37,7 @@ app.use("/api/designs", router);
 app.use("/uploads", express.static("uploads"));
 
 //connecting to db
-sequelize.sync({ force: false });
+sequelize.sync({ force: false});
 
 app.use(errorHandler);
 //Port

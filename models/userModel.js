@@ -1,4 +1,4 @@
-import sequelize from "../configuration/db.js";
+import sequelize from "../configuration/db.js"; 
 import { DataTypes } from "sequelize";
 
 const User = sequelize.define(
@@ -11,7 +11,7 @@ const User = sequelize.define(
     image: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: "../profileiamge.jpg",
+      // defaultValue: "../profileiamge.jpg",
     },
     email: {
       type: DataTypes.STRING,
