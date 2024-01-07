@@ -173,5 +173,25 @@ const deleteDesign = async (req, res) => {
   }
 };
 
+
+// // Get all designs by company id
+const getAllDesignsById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const designs = await Design.findAll({Where:{CompanyId:id} ,include: [Company, Category]});
+    res.status(200).json({
+      data: designs,
+      message: "success",
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: null,
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
 // // Export functions
-export { createDesign, getAllDesigns, getDesign, deleteDesign, updateDesign };
+export { createDesign,getAllDesignsById, getAllDesigns, getDesign, deleteDesign, updateDesign };

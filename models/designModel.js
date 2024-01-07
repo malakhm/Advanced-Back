@@ -26,4 +26,5 @@ Category.hasMany(Design, { foreignKey: "CategoryId"});
 Design.belongsTo(Category, { foreignKey: "CategoryId" });
 
 
+
 export default Design

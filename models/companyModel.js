@@ -19,7 +19,7 @@ const Company = sequelize.define(
   logo: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue:null
+    defaultValue:'https://res.cloudinary.com/dxg6ijfbf/image/upload/v1704389759/designs/j4ohhmghrsx0wmx5pdqh.jpg'
   },
   location: {
     type: DataTypes.STRING,

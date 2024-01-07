@@ -53,36 +53,27 @@ export const getUser = async (req, res) => {
 // Create a new user
 export const createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
-  // const image = req.file.path;
+
   try {
-    const existingEmail = await User.findOne({ where: { email: email } });
+    const existingEmail = await User.findOne({ where: { email } });
     if (existingEmail) {
-      return res.json({
+      return res.status(400).json({
         message: "Email already exists!",
-        status: 400,
         error: true,
       });
     }
 
-    const existingUsername = await User.findOne({
-      where: { username: username },
-    });
+    const existingUsername = await User.findOne({ where: { username } });
     if (existingUsername) {
-      return res.json({
+      return res.status(400).json({
         message: "Username already exists!",
-        status: 400,
         error: true,
       });
     }
 
-    if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(
-        password
-      )
-    ) {
-      return res.json({
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(password)) {
+      return res.status(422).json({
         message: "Invalid password",
-        status: 422,
         error: true,
       });
     }
@@ -94,19 +85,17 @@ export const createUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      // image,
     });
 
     return res.status(201).json({
       data: user,
       message: "User created successfully!",
-      status: 201,
     });
   } catch (error) {
+    console.error("Error creating user:", error.message);
     return res.status(500).json({
       data: null,
       message: "Failed to create user!",
-      status: 500,
       error: true,
     });
   }
@@ -201,42 +190,43 @@ export const deleteUser = async (req, res) => {
 //Sign in User
 export const signInUser = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password)
+  if (!email || !password) {
     return res.status(400).json({
-      message: "email and password are required fields! ",
+      message: "email and password are required fields!",
     });
+  }
+
   try {
     const findEmail = await User.findOne({ where: { email: email } });
 
     if (!findEmail) {
-      res.status(404).json({ message: "not found" });
-    } else {
-      // console.log(findEmail.password)
-      const match = await bcrypt.compare(password, findEmail.password);
-      if (match) {
-        // Authenticate user with jwt
-        // console.log(match)
-        const token = jwt.sign(
-          {
-            id: findEmail.id,
-            role: findEmail.role,
-            isCompany:false,
-          },
-          process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "1d" }
-        );
+      return res.status(401).json({ message: "Wrong credentials" });
+    }
 
-        res.status(200).send({
+    const match = await bcrypt.compare(password, findEmail.password);
+    if (match) {
+      const token = jwt.sign(
+        {
           id: findEmail.id,
-          username: findEmail.username,
-          email: findEmail.email,
           role: findEmail.role,
-          image: findEmail.image,
-          accessToken: token,
-        });
-      }
+          isCompany: false,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "1d" }
+      );
+
+      return res.status(200).send({
+        id: findEmail.id,
+        username: findEmail.username,
+        email: findEmail.email,
+        role: findEmail.role,
+        image: findEmail.image,
+        accessToken: token,
+      });
+    } else {
+      return res.status(401).json({ message: "Wrong credentials" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
