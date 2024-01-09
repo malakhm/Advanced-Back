@@ -2,10 +2,10 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
 //  connection
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: process.env.DB_TYPE,
-  port:process.env.DB_PORT,
+const sequelize = new Sequelize('defaultdb', 'avnadmin', 'AVNS_-M_ym4s3-GcOpu9SXOe', {
+  host: 'mysql-23819250-spaceloom.a.aivencloud.com',
+  dialect: 'mysql',
+  port:'17609',
 });
 
 

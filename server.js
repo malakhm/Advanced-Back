@@ -9,7 +9,7 @@ import router from "./routes/designRoute.js";
 import messageRoute from "./routes/messageRoute.js";
 import favoriteRoute from "./routes/favoriteRoute.js";
 import { Server } from "socket.io";
-import { createServer } from "http";
+import http from "http";
 import cors from "cors";
 
 import bodyParser from "body-parser";
@@ -50,20 +50,39 @@ app.use(errorHandler);
 //   }
 // });
 
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
+// const httpServer = createServer(app);
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"],
+//   },
+// });
+// io.on("connection", (socket) => {
+//   console.log(socket.id);
+//   socket.on("joinUserRoom", (user) => {
+//     if (user.role === "user") {
+//       socket.join("userRoom");
+//     }
+//   });
+// });
+// httpServer.listen(process.env.PORT);
+
+const server = http.createServer(app);
+const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+    origin: ['http://localhost:3000/','http://127.0.0.1:3000/'],
+    methods: ['GET', 'POST']
+  }
+})
+
 io.on("connection", (socket) => {
-  console.log(socket.id);
-  socket.on("joinUserRoom", (user) => {
-    if (user.role === "user") {
-      socket.join("userRoom");
-    }
-  });
+  console.log("user connected",socket.id);
+
+  socket.on("disconnect", () =>{
+    console.log("user disconnected", socket.id);
+  })
+})
+server.listen(process.env.PORT, ()=>{
+  console.log('server running')
 });
-httpServer.listen(process.env.PORT);
 export default io;

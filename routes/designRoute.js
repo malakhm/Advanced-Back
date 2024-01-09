@@ -14,6 +14,7 @@ router.get('/', getAllDesigns);
 // Get a specific design by ID
 router.get('/:id', getDesign);
  router.get('/get/:id', getAllDesignsById)
+
 // Update a specific design by ID
 router.put('/:id', Verification.verifyCompany,upload.array('images', 5), updateDesign);// admin and company have access
 

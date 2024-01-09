@@ -178,7 +178,7 @@ const deleteDesign = async (req, res) => {
 const getAllDesignsById = async (req, res) => {
   try {
     const { id } = req.params;
-    const designs = await Design.findAll({Where:{CompanyId:id} ,include: [Company, Category]});
+    const designs = await Design.findAll({where:{CompanyId:id} ,include: [Company, Category]});
     res.status(200).json({
       data: designs,
       message: "success",

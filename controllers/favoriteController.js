@@ -184,4 +184,24 @@ export const deleteFavorite = async (req, res) => {
   }
 };
 
+export const getLikedDesignsByid = async (req, res) => {
+
+  const { id } = req.params
+
+  try{
+    const likes = await Favorite.findAll({ where:{DesignId: id}});
+    res.status(200).json({
+      data: likes,
+      number: likes.length
+      
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+      error: true,
+    });
+  }
+}
 export default Favorite;
