@@ -41,7 +41,7 @@ sequelize.sync({ force: false});
 
 app.use(errorHandler);
 //Port
-
+// const port = process.env.PORT;
 // app.listen(port, () => {
 //   try {
 //     console.log(`The server is connected on Port: ${port}`);
@@ -50,4 +50,20 @@ app.use(errorHandler);
 //   }
 // });
 
-
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://spaceloomfront.onrender.com",
+    methods: ["GET", "POST"],
+  },
+});
+io.on("connection", (socket) => {
+  console.log(socket.id);
+  socket.on("joinUserRoom", (user) => {
+    if (user.role === "user") {
+      socket.join("userRoom");
+    }
+  });
+});
+httpServer.listen(process.env.PORT);
+export default io;
