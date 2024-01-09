@@ -53,7 +53,7 @@ app.use(errorHandler);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://spaceloomfront.onrender.com",
     methods: ["GET", "POST"],
   },
 });
